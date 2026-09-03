@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 250 25% 6%;
+    --foreground: 250 15% 95%;
+    --card: 250 22% 9%;
+    --card-foreground: 250 15% 95%;
+    --popover: 250 22% 9%;
+    --popover-foreground: 250 15% 95%;
+    --primary: 263 70% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 18% 16%;
+    --secondary-foreground: 250 15% 95%;
+    --muted: 250 18% 14%;
+    --muted-foreground: 250 10% 60%;
+    --accent: 38 95% 55%;
+    --accent-foreground: 250 25% 8%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 72% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 95% 55%;
+    --warning-foreground: 250 25% 8%;
+    --border: 250 18% 18%;
+    --input: 250 18% 18%;
+    --ring: 263 70% 60%;
+    --radius: 0.85rem;
+    --chart-1: 263 70% 60%;
+    --chart-2: 142 72% 45%;
+    --chart-3: 38 95% 55%;
+    --chart-4: 280 65% 65%;
+    --chart-5: 0 72% 55%;
+  }
+
+  .dark {
+    --background: 250 25% 6%;
+    --foreground: 250 15% 95%;
+    --card: 250 22% 9%;
+    --card-foreground: 250 15% 95%;
+    --popover: 250 22% 9%;
+    --popover-foreground: 250 15% 95%;
+    --primary: 263 70% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 18% 16%;
+    --secondary-foreground: 250 15% 95%;
+    --muted: 250 18% 14%;
+    --muted-foreground: 250 10% 60%;
+    --accent: 38 95% 55%;
+    --accent-foreground: 250 25% 8%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 72% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 95% 55%;
+    --warning-foreground: 250 25% 8%;
+    --border: 250 18% 18%;
+    --input: 250 18% 18%;
+    --ring: 263 70% 60%;
+    --chart-1: 263 70% 60%;
+    --chart-2: 142 72% 45%;
+    --chart-3: 38 95% 55%;
+    --chart-4: 280 65% 65%;
+    --chart-5: 0 72% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-size: 17px;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Custom scrollbar — dark themed */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.35);
+  border-radius: 6px;
+  border: 2px solid hsl(var(--background));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.55);
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+}
+
+/* Number font for stats */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Soft shadows for cards & buttons ===== */
+@layer components {
+  .shadow-soft {
+    box-shadow:
+      0 1px 2px hsl(var(--primary) / 0.06),
+      0 4px 12px hsl(250 30% 2% / 0.35);
+  }
+  .shadow-soft-lg {
+    box-shadow:
+      0 2px 4px hsl(var(--primary) / 0.08),
+      0 8px 28px hsl(250 30% 2% / 0.45);
+  }
+  .shadow-glow-primary {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.15), 0 4px 20px hsl(var(--primary) / 0.25);
+  }
+  .shadow-glow-success {
+    box-shadow: 0 0 0 1px hsl(var(--success) / 0.15), 0 4px 20px hsl(var(--success) / 0.25);
+  }
+  .shadow-glow-warning {
+    box-shadow: 0 0 0 1px hsl(var(--warning) / 0.15), 0 4px 20px hsl(var(--warning) / 0.25);
+  }
+}
+
+/* ===== Card hover lift ===== */
+[class*="shadow-soft"]:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ===== Gradient text utility ===== */
+.text-gradient-primary {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(280 65% 65%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== Focus ring glow ===== */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring) / 0.5);
+  border-radius: var(--radius);
+}
+
+/* ===== Selection color ===== */
+::selection {
+  background: hsl(var(--primary) / 0.3);
+  color: hsl(var(--foreground));
+}
