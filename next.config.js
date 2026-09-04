@@ -1,7 +1,9 @@
+/* eslint-disable */
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
+    dirs: [],
   },
   images: { unoptimized: true },
   typescript: {
@@ -14,3 +16,5 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+

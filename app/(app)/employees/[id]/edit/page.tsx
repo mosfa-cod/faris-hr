@@ -1,4 +1,4 @@
- 'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -34,7 +34,7 @@ import {
 export default function EmployeeDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { role, companyRole } = useAuth();
+  const { role, company } = useAuth();
   const { toast } = useToast();
   const [emp, setEmp] = useState<Employee | null>(null);
   const [docs, setDocs] = useState<EmployeeDocument[]>([]);
@@ -77,23 +77,79 @@ export default function EmployeeDetailPage() {
     })();
   }, [params.id]);
 
-  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>, type: string) {
+  async function handleUpload(
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string
+  ) {
     const file = e.target.files?.[0];
+
     if (!file || !emp) return;
+
+    if (!company) {
+      toast({
+        title: 'تعذر تحديد الشركة الحالية',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setUploading(true);
+
     const path = `employees/${emp.id}/${type}/${Date.now()}-${file.name}`;
-    const { error: upErr } = await supabase.storage.from('employee-docs').upload(path, file);
+
+    const { error: upErr } = await supabase
+      .storage
+      .from('employee-docs')
+      .upload(path, file);
+
     if (upErr) {
-      toast({ title: 'خطأ', description: upErr.message, variant: 'destructive' });
+      toast({
+        title: 'خطأ',
+        description: upErr.message,
+        variant: 'destructive',
+      });
       setUploading(false);
       return;
     }
-    const { data: pub } = supabase.storage.from('employee-docs').getPublicUrl(path);
-    await supabase.from('documents').insert({
-      employee_id: emp.id, type, name: file.name, storage_path: path, file_url: pub.publicUrl,
+
+    const { data: pub } = supabase
+      .storage
+      .from('employee-docs')
+      .getPublicUrl(path);
+
+    const { error: documentError } = await supabase
+      .from('documents')
+      .insert({
+        employee_id: emp.id,
+        company_id: company.id,
+        type,
+        name: file.name,
+        storage_path: path,
+        file_url: pub.publicUrl,
+      });
+
+    if (documentError) {
+      toast({
+        title: 'خطأ',
+        description: documentError.message,
+        variant: 'destructive',
+      });
+      setUploading(false);
+      return;
+    }
+
+    toast({
+      title: 'تم الرفع',
+      description: 'تم رفع الملف بنجاح',
     });
-    toast({ title: 'تم الرفع', description: 'تم رفع الملف بنجاح' });
-    const { data } = await supabase.from('documents').select('*').eq('employee_id', emp.id).order('uploaded_at', { ascending: false });
+
+    const { data } = await supabase
+      .from('documents')
+      .select('*')
+      .eq('employee_id', emp.id)
+      .eq('company_id', company.id)
+      .order('uploaded_at', { ascending: false });
+
     setDocs((data ?? []) as EmployeeDocument[]);
     setUploading(false);
   }
@@ -174,7 +230,7 @@ export default function EmployeeDetailPage() {
               <InfoRow icon={Briefcase} label="القسم" value={emp.department?.name_ar ?? emp.department?.name} />
               <InfoRow icon={Briefcase} label="الوظيفة" value={emp.position?.title_ar ?? emp.position?.title} />
               <InfoRow icon={User} label="المدير المباشر" value={emp.manager?.full_name} />
-              {(companyRole === 'owner' || (companyRole as string) === 'manager') ? (
+              {((role as string) === 'owner' || (role as string) === 'manager') ? (
                 <>
                   <InfoRow icon={Wallet} label="الراتب الأساسي" value={formatCurrency(emp.basic_salary)} />
                   <InfoRow icon={Wallet} label="البدلات" value={formatCurrency(emp.allowances)} />

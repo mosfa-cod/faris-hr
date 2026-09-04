@@ -22,7 +22,7 @@ import { hasPermission } from '@/lib/permissions';
 import type { Department, Position, Branch, Employee } from '@/lib/types';
 
 export default function DepartmentsPage() {
-  const { role } = useAuth();
+  const { role, company } = useAuth();
   const { toast } = useToast();
   const canManage = hasPermission(role ?? undefined, 'departments.manage');
 

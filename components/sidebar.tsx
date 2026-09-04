@@ -27,7 +27,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           <Building2 className="h-5 w-5 text-white" />
         </div>
         <div className="flex flex-col">
-          <span className="font-heading text-sm font-bold leading-tight">نظام فارس دحروج</span>
+          <span className="font-heading text-base font-bold leading-tight">نظام فارس دحروج</span>
           <span className="text-[11px] text-muted-foreground">Faris HR — SaaS</span>
         </div>
       </div>
@@ -35,8 +35,8 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       {company && (
         <div className="border-b border-border/50 bg-primary/5 px-4 py-3">
           <p className="text-[10px] uppercase tracking-wide text-muted-foreground">الشركة الحالية</p>
-          <p className="truncate font-heading text-sm font-semibold">{company.name_ar ?? company.name}</p>
-          <p className="text-[11px] text-accent">
+          <p className="truncate font-heading text-base font-semibold">{company.name_ar ?? company.name}</p>
+          <p className="text-xs text-accent">
             {companyRole ? COMPANY_ROLE_LABELS[companyRole] : ''}
           </p>
         </div>
@@ -53,7 +53,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   href={item.href}
                   onClick={onNavigate}
                   className={cn(
-                    'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                    'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-base font-medium transition-all duration-200',
                     active
                       ? 'bg-gradient-primary text-white shadow-glow-primary'
                       : 'text-muted-foreground hover:bg-secondary/80 hover:text-foreground hover:translate-x-0.5'
@@ -68,7 +68,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         </ul>
       </nav>
 
-      <div className="border-t border-border/50 p-4 text-center text-[11px] text-muted-foreground">
+      <div className="border-t border-border/50 p-4 text-center text-xs text-muted-foreground">
         نظام فارس دحروج لإدارة الموارد البشرية - Faris HR © 2025
       </div>
     </aside>
